@@ -88,10 +88,11 @@ Martin在新版中对代码坏味道清单进行了重新梳理。下表对比�
 - 为了让重构手法间衔接得更加顺畅，新版中重新调整了重构手法的编排顺序；
   > 新版中将最基本的常用重构放到了一章，起名叫做”第一组重构“，然后按照”封装“、”搬迁“、”数据“、”逻辑“、”API“以及”继承关系“的顺序和分类，重新组织了其它所有的重构手法；
 
-- 为了保持概念的内聚和统一性，对一些重构手法进行了合并；
-  > 例如将`函数改名（Rename Method）`、`添加参数（Add Parameter）`和`移除参数（Remove Parameter）`统一合并为`改名函数声明（Change Function Declaration）`，类似的还有很多；
+- 为了保持概念的内聚和一致，对一些重构手法进行了重命名或者合并；
+  > 将`引入Null对象（Introduce Null Object`改为`引入特例（Introduce Special Case）`
+  > 例如将`函数改名（Rename Method）`、`添加参数（Add Parameter）`和`移除参数（Remove Parameter）`统一合并为`改名函数声明（Change Function Declaration）`；
 
-- 通过调整原有的重构命名或者新增新的重构手法，让重要的重构同时存在正向和反向手法，以便可以在操作时更加灵活地决定重构的方向；
+- 通过调整原有的重构命名或者新增新的重构手法，让重要的重构同时存在正向和反向手法，以便可以在实践时更加灵活地决定重构的方向；
   > 例如将原来的`内联临时变量（Inline Temp）`和`引入解释性变量（Introduce Explaining Variable） `改名为`内联变量（Inline Variable）`和`提炼变量（Extract Variable）`；
     将`以函数取代参数（Replace Parameter with Methods）`修改为`以查询取代参数（Replace Parameter with Query）`，并为其引入反向重构`以参数取代查询（Replace Query with Parameter）`；
 
@@ -101,19 +102,19 @@ Martin在新版中对代码坏味道清单进行了重新梳理。下表对比�
   > - `示意图`是Martin为每个重构手法画的一副小图，通过形象化的方式展现该每个重构的效果。
   > - 另外，我建议在阅读时，除了关注每个重构手法的`做法`和`范例`外，最好能把`动机`部分也好好阅读下。`动机`部分介绍了”为什么要做“以及”什么时候不该“做这个重构，里面的很多思考都很有启发意义。
 
-- 由于编程范式的多元化，新版中弱化了面向对象，尽可能的让重构手法更加的具有普适性
-  > 例如将`引入Null对象（Introduce Null Object`改为`引入特例（Introduce Special Case）`
+- 由于编程范式的多元化，新版引入了面向函数式的一些重构；
+  > 例如增加`以管道取代循环（Replace Loop with Pipeline）`的重构；
 
 - 考虑到”组合优于继承“，调整删除了一些和"重构到继承"相关的重构手法；
   > 例如删除了`提炼子类（Extract Subclass）`和`以继承取代委托（Replace Delegation with Inheritance）`等
 
-- 由于JavaScript语法特性，删除了一些不适用的重构手法；
-  > 例如删除了`提炼接口（Extract Interface）`和`封装向下转型（Encapsulate Downcast）`等
+- 由于JavaScript鸭子类型的语法特性，删除了一些不再适用的重构手法；
+  > 例如删除了`提炼接口（Extract Interface）`、`塑造模板函数（Form Template Method）`和`封装向下转型（Encapsulate Downcast）`等
 
 - 在某些重构的操作步骤里，利用了JavaScript的语法特性简化了重构的操作过程；
   > 本书经常使用两类JavaScript的语法特征：
     - JavaScript支持函数式编程，允许函数作为参数和返回值，允许在函数里面嵌套定义函数以及支持匿名函数和闭包。所以在`提炼函数（Extract Function）`手法里面，先将提炼出来的新函数定义在调用它的函数的里面，这样借助函数的闭包性可以减少函数间传递的参数数量，等到真正需要复用该子函数的时候再将它挪出；而`以管道取代循环（Replace Loop with Pipeline）`重构，则完全依赖于语言支持匿名函数和闭包性才能做到。
-    - JavaScript作为一门动态语言，支持灵活的对象模型。新版中很多重构手法，会在重构的中间过程往对象中临时加入新的字段或者函数，以方便后面的重构过程。具体见`拆分阶段（Split Phase）`和`函数组合成变换（Combine Functions into Transform）`等；
+    - JavaScript作为一门动态语言，支持灵活的对象模型。新版中很多重构手法，会在重构的中间过程往对象中临时加入新的字段或者函数，以方便后面的重构过程，尤其是当看到在重构的过程中间引入类似`enrichXXX`名称的函数时。具体见`函数组合成变换（Combine Functions into Transform）`和`引入特例（Introduce Special Case）`等；
 
 对于重构手法部分，Martin进行了精心的调整，上述只是我总结新版中较明显的变动，还有更多细致的修改还是请仔细品读原书。最后要说的是，书中介绍了多达六十多种重构手法，普通人很难把所有的步骤都牢记于心。所以可以把此书当做一本重构名录，在实践过程中如果忘记了某些具体的操作步骤，可以再翻书查阅。另外相信经过反复阅读和实践，慢慢就会掌握重构手法背后普遍的原理和规律，做到”手中无剑，心中有剑“。我曾把所有的重构手法归结为了四类基本手法，最后浓缩成了两个核心操作，并给出了在重构时合理编排重构步骤的推理方法以及利用`锚点`来简化重构操作的技巧。具体见[《高效重构（二）：掌握重构手法》](https://www.jianshu.com/p/58f4c61b1cb3)。
 
