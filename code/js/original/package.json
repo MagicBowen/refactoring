@@ -1,0 +1,28 @@
+{
+  "name": "refactoring",
+  "version": "1.0.0",
+  "description": "Refactoring Practice",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MagicBowen/refactoring/tree/master/code/js/original"
+  },
+  "keywords": [
+    "refactoring",
+    "js",
+    "practice"
+  ],
+  "author": "MagicBowen",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "*",
+    "chai": "*"
+  }
+}
