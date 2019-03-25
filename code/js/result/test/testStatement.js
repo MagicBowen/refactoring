@@ -1,5 +1,5 @@
 const assert = require('chai').assert;
-const statement = require('../src');
+const statement = require('../src').statement;
 const plays = require('./plays.json');
 const invoices = require('./invoices.json');
 
@@ -13,7 +13,7 @@ You earned 47 credits
 
 describe('Statement', () => {
     describe('#statement()', () => {
-        it('plait text result', function () {
+        it('plain text', function () {
             assert.equal(statement(invoices[0], plays), expected);
         });
     });
